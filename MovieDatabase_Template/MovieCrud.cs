@@ -8,8 +8,11 @@
     using MovieDatabase;
     public class MovieCrud
     {
-        string connString = "";
-        MySqlConnection cnn = null;
+        string server = Environment.GetEnvironmentVariable("MYSQLSERVER") ?? "";
+        string user = Environment.GetEnvironmentVariable("MYSQLUSER") ?? "";
+        string password = Environment.GetEnvironmentVariable("MYSQLPASSWORD") ?? "";
+        string database = Environment.GetEnvironmentVariable("MYSQLDATABSE") ?? "";
+        string connectionString = $"Server={server}; Database={database}; Uid={user}; Pwd={password};";
 
         public MovieCrud(string connString) { }
 
@@ -127,6 +130,7 @@
 
         public List<Movie> GetMoviesWithActor(int actorId)
         {
+
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -137,14 +141,37 @@
 
         public void DeleteActor(int actorId)
         {
+           var conn=new MovieCrud(string connString);
+            conn.Open();
+            string sql="Delete from Actor where ID=actorId";
+            var cmd=new MySqlCommand(sql,conn);
+            cmd.Parameters.AddWithValue("actorId","Actor");
+            cmd.ExecuteNonQuery();
+            string sql="Delete from LeadActor where ID=actorId";
+            cmd.Parameters.AddWithValue("actorId","LeadActor");
+            var cmd=new MySqlCommand(sql,conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
             // Ta bort skådespelaren från databasen
             // Ta bort alla relationer mellan skådespelaren och filmerna från databasen
         }
 
         public void DeleteMove(int moveId)
         {
+            var conn=new MovieCrud(string connString);
+            conn.Open();
+            string sql="Delete from Movies where ID=movieId";
+            var cmd=new MySqlCommand(sql,conn);
+            cmd.Parameters.AddWithValue("movieId","Movies");
+            cmd.ExecuteNonQuery();
+            string sql="Delete from LeadActor where ID=movieId";
+            cmd.Parameters.AddWithValue("movieId","LeadActor");
+            var cmd=new MySqlCommand(sql,conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
             // Ta bort filmen från databasen
             // Ta bort alla relationer mellan filmen och skådespelarna från databasen
+            
         }
     }
 }
