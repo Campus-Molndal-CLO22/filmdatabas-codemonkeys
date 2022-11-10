@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -12,10 +11,15 @@
 
     public class MovieCrud
     {
-
+        private string connString="";
+        private string conn="";
         
 
-        public MovieCrud(string connString) { }
+        public MovieCrud(string connString)   
+        {
+            connString="";
+            conn =new MySqlConnection( connString);
+        }
         
         public void AddMovie(Movie movie)
 
@@ -37,7 +41,7 @@
         {
             
             // Kolla om skådespelaren finns i databasen
-            var conn = new MySqlConnection(connString);
+           
             var sql = "SELECT * FROM name WHERE Actor = @name";
             var cmd = new MySqlCommand(sql, conn);
             // Uppdatera i så fall annars
@@ -76,12 +80,10 @@
 
         public List<Movie> GetMoviesFromYear(int year)
         {
-             
+             {
             DataTable dt = new DataTable();
 
-            var connString = "server=ns8.inleed.net;uid=s60127_JamesS;pwd=RT89DwnZ82pglb8G;database=s60127_Codemonkeys";
-            var conn = new MySqlConnection(connString);
-            conn.Open();
+           
 
             // Hämta alla matchande filmer från databasen
             string sql = "SELECT year FROM movies WHERE year = @input";
@@ -120,6 +122,7 @@
 
         public List<Movie> GetMovie(string name)
         {
+            
             // Hämta matchande film från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla relaterade skådespelare från databasen
@@ -131,6 +134,7 @@
 
         public List<Actor> GetActors()
         {
+           
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -141,6 +145,7 @@
 
         public List<Actor> GetActorsInMovie(Movie movie)
         {
+           
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -151,6 +156,7 @@
 
         public List<Movie> GetMoviesWithActor(Actor actor)
         {
+            
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -161,6 +167,7 @@
 
         public List<Movie> GetMoviesWithActor(string actorName)
         {
+            
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -171,7 +178,7 @@
 
         public List<Movie> GetMoviesWithActor(int actorId)
         {
-
+            
             // Hämta alla skådespelare från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla matchande filmer från databasen
@@ -182,8 +189,7 @@
 
         public void DeleteActor(int actorId)
         {
-           var conn=new MovieCrud( connString);
-            conn.Open();
+            
             string sql="Delete from Actor where ID=actorId";
             var cmd=new MySqlCommand(sql,conn);
             cmd.Parameters.AddWithValue("actorId","Actor");
@@ -192,15 +198,14 @@
             cmd.Parameters.AddWithValue("actorId","LeadActor");
             var cmd=new MySqlCommand(sql,conn);
             cmd.ExecuteNonQuery();
-            conn.Close();
+            conn.Cose();
             // Ta bort skådespelaren från databasen
             // Ta bort alla relationer mellan skådespelaren och filmerna från databasen
         }
 
         public void DeleteMove(int moveId)
         {
-            var conn=new MovieCrud(string connString);
-            conn.Open();
+            
             string sql="Delete from Movies where ID=movieId";
             var cmd=new MySqlCommand(sql,conn);
             cmd.Parameters.AddWithValue("movieId","Movies");
@@ -209,7 +214,7 @@
             cmd.Parameters.AddWithValue("movieId","LeadActor");
             var cmd=new MySqlCommand(sql,conn);
             cmd.ExecuteNonQuery();
-            conn.Close();
+           
             // Ta bort filmen från databasen
             // Ta bort alla relationer mellan filmen och skådespelarna från databasen
             
