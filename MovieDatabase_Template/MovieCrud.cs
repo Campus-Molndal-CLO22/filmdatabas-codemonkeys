@@ -25,19 +25,18 @@
         {
             var conn = new MySqlConnection(connString);
             conn.Open();
-            // Kolla om filmen redan finns, uppdatera i så fall
-
-            var s1 = "SELECT * FROM Movie"
-            //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
-            //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
-            // Om inte, lägg till filmen i databasen
-            // Lägg till skådespelarna i databasen
-            // Lägg till relationen mellan filmen och skådespelarna i databasen
             var sql = "Select * from Movie where title=movie";
-            if(movie != null)
-                 sql="Update Movie set (Id,Title,Year,LeadRole,Genre) "
-            cmd.Parameters.AddWithValue("movie","@Title");
-            cmd=new MySqlCommand(sql,conn);
+            var cmd = new MySqlCommand(sql, conn);
+            if (movie != null)
+            {
+                sql = "Update Movie set (Title,Year,Genre) ";
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("Movie", "Title, Year, Genre");             
+            }
+            
+            cmd =new MySqlCommand(sql,conn);
             cmd.ExecuteNonQuery();
             conn.Close();
 
@@ -49,17 +48,20 @@
             // Kolla om skådespelaren finns i databasen
             var conn = new MySqlConnection(connString);
             conn.Open();
-            var conn = new MySqlConnection(connString);
-            conn.Open();
-            // Kolla om filmen redan finns, uppdatera i så fall
-            //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
-            //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
-            // Om inte, lägg till filmen i databasen
+            // Updatera isåfall
             // Lägg till skådespelarna i databasen
-            // Lägg till relationen mellan filmen och skådespelarna i databasen
-            var sql = "SELECT * FROM name WHERE Actor = @name"+"UPDATE * FROM name WHERE Actor = @name";
-            cmd.Parameters.AddWithValue("@Actor", "@name");
-            cmd=new MySqlCommand(sql,conn);
+            var sql = "SELECT * FROM name WHERE Actor = @name";
+            var cmd = new MySqlCommand(sql, conn);
+
+            if (actor != null)
+            {
+                sql = "Update Movie set (name,birthYear,movieId)";
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("Actor", "name, birthYear");
+            }
+            
             cmd.ExecuteNonQuery();
             conn.Close();
 
@@ -72,6 +74,17 @@
 
             // Kolla om relationen finns i databasen, i så fall är du klar
             // Annars lägg till relationen mellan filmen och skådespelaren i databasen
+            var conn = new MySqlConnection(connString);
+            conn.Open();
+            // Updatera isåfall
+            // Lägg till skådespelarna i databasen
+            var sql = "SELECT JOIN Casting.movieId = Actor.actorId";
+            sql = "SELECT * FROM Actor";
+            var cmd = new MySqlCommand(sql, conn);
+
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
 
         }
 
