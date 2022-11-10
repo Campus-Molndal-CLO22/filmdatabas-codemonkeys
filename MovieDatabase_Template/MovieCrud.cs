@@ -17,7 +17,9 @@
         public MovieCrud(string connString) { }
         
         public void AddMovie(Movie movie)
+
         {
+
             // Kolla om filmen redan finns, uppdatera i så fall
             //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
             //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
