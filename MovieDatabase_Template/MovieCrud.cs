@@ -7,27 +7,40 @@
     using System.Threading.Tasks;
     using MovieDatabase;
     using MySql.Data.MySqlClient;
+    using MySqlX.XDevAPI.Relational;
 
     public class MovieCrud
     {
         string connString = "";
         MySqlConnection cnn = null;
-
+        
         public MovieCrud(string connString) { }
-
+        
         public void AddMovie(Movie movie)
         {
             // Kolla om filmen redan finns, uppdatera i så fall
+            //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
+            //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
             // Om inte, lägg till filmen i databasen
             // Lägg till skådespelarna i databasen
             // Lägg till relationen mellan filmen och skådespelarna i databasen
+            var sql = "INSERT INTO Movies (Title, Year, LeadRole, Genre) " +
+                "VALUES (@Title, @Year, @LeadRole, @Genre) " +
+                "ON DUBLICATE KEY UPDATE (@Title, @Year, @LeadRole, @Genre)";
+
         }
 
         public void AddActor(Actor actor)
         {
+            
             // Kolla om skådespelaren finns i databasen
+            var conn = new MySqlConnection(connString);
+            var sql = "SELECT * FROM name WHERE Actor = @name";
+            var cmd = new MySqlCommand(sql, conn);
             // Uppdatera i så fall annars
+            sql = "UPDATE * FROM name WHERE Actor = @name";
             // Lägg till skådespelaren i databasen
+            cmd.Parameters.AddWithValue("@Actor", "@name");
         }
 
         public void AddActorToMovie(Actor actor, Movie movie)
