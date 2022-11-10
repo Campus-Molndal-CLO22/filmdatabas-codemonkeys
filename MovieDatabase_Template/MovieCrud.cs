@@ -45,8 +45,10 @@
 
         public void AddActorToMovie(Actor actor, Movie movie)
         {
+
             // Kolla om relationen finns i databasen, i så fall är du klar
             // Annars lägg till relationen mellan filmen och skådespelaren i databasen
+
         }
 
         public List<Movie> GetMovies()
@@ -71,12 +73,36 @@
 
         public List<Movie> GetMoviesFromYear(int year)
         {
+             {
+            DataTable dt = new DataTable();
+
+            var connString = "server=ns8.inleed.net;uid=s60127_JamesS;pwd=RT89DwnZ82pglb8G;database=s60127_Codemonkeys";
+            var conn = new MySqlConnection(connString);
+            conn.Open();
+
+            // Hämta alla matchande filmer från databasen
+            string sql = "SELECT year FROM movies WHERE year = @input";
+            var cmd = new MySqlCommand(sql, conn);
+
+            // Hämta alla relationer mellan filmer och skådespelare från databasen
+            string sql1 = "SELECT * FROM LeadActor";
+
+            // Hämta alla relaterade skådespelare från databasen
+            string sql2 = "SELECT name FROM actor WHERE ";
+
+            cmd.Parameters.AddWithValue("@s60127_Codemonkeys", "@input");
+            var adt = new MySqlDataAdapter(cmd);
+            adt.Fill(dt);
+
+            return dt;
+
             // Hämta alla matchande filmer från databasen
             // Hämta alla relationer mellan filmer och skådespelare från databasen
             // Hämta alla relaterade skådespelare från databasen
             // Skapa en lista med filmer
             // Lägg till skådespelarna till filmerna
             // Returnera listan med filmer
+
         }
 
         public List<Movie> GetMovie(int Id)
