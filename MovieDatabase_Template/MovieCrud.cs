@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -75,7 +76,7 @@
 
         public List<Movie> GetMoviesFromYear(int year)
         {
-             {
+             
             DataTable dt = new DataTable();
 
             var connString = "server=ns8.inleed.net;uid=s60127_JamesS;pwd=RT89DwnZ82pglb8G;database=s60127_Codemonkeys";
@@ -181,7 +182,7 @@
 
         public void DeleteActor(int actorId)
         {
-           var conn=new MovieCrud(string connString);
+           var conn=new MovieCrud( connString);
             conn.Open();
             string sql="Delete from Actor where ID=actorId";
             var cmd=new MySqlCommand(sql,conn);
