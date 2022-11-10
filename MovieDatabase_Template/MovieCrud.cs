@@ -24,6 +24,8 @@
 
         {
             // Kolla om filmen redan finns, uppdatera i så fall
+
+            var s1 = "SELECT * FROM Movie"
             //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
             //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
             // Om inte, lägg till filmen i databasen
