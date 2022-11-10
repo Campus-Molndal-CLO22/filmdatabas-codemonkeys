@@ -14,11 +14,11 @@
 
     public class MovieCrud
     {
-        private string connString="";
+        private string connString=File.ReadAllLines("C:\Users\tinas\OneDrive\Dokument\connString.txt");
         
         public MovieCrud(string connString)   
         {
-            connString="";           
+                       
         }
         public void AddMovie(Movie movie)
 
@@ -96,6 +96,7 @@
             // Skapa en lista med filmer
             // Lägg till skådespelarna till filmerna
             // Returnera listan med filmer
+
             return null;
         }
 
@@ -152,6 +153,10 @@
                 // Skapa en lista med filmer
                 // Lägg till skådespelarna till filmerna
                 // Returnera listan med filmer
+                string sql = "Select IMDB_link from Movie where id=Id"
+                string link="";
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo 
+                {FileName=link,UseShellExecute=true});
                 return null;
             }
 
@@ -164,7 +169,12 @@
                 // Skapa en lista med filmer
                 // Lägg till skådespelarna till filmerna
                 // Returnera listan med filmer
+                string sql = "Select IMDB_link from Movie where id=Id"
+                string link="";
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo 
+                {FileName=link,UseShellExecute=true});
                 return null;
+                
             }
 
 
