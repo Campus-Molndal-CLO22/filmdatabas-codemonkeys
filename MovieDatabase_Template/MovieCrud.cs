@@ -23,15 +23,21 @@
         public void AddMovie(Movie movie)
 
         {
+            var conn = new MySqlConnection(connString);
+            conn.Open();
             // Kolla om filmen redan finns, uppdatera i så fall
             //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
             //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
             // Om inte, lägg till filmen i databasen
             // Lägg till skådespelarna i databasen
             // Lägg till relationen mellan filmen och skådespelarna i databasen
-            var sql = "INSERT INTO Movies (Title, Year, LeadRole, Genre) " +
-                "VALUES (@Title, @Year, @LeadRole, @Genre) " +
-                "ON DUBLICATE KEY UPDATE (@Title, @Year, @LeadRole, @Genre)";
+            var sql = "Select * from Movie where title=movie";
+            if(movie != null)
+                 sql="Update Movie set (Id,Title,Year,LeadRole,Genre) "
+            cmd.Parameters.AddWithValue("movie","@Title");
+            cmd=new MySqlCommand(sql,conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
 
         }
 
@@ -41,13 +47,22 @@
             // Kolla om skådespelaren finns i databasen
             var conn = new MySqlConnection(connString);
             conn.Open();
-            var sql = "SELECT * FROM name WHERE Actor = @name";
-            var cmd = new MySqlCommand(sql, conn);
-            // Uppdatera i så fall annars
-            sql = "UPDATE * FROM name WHERE Actor = @name";
-            // Lägg till skådespelaren i databasen
+            var conn = new MySqlConnection(connString);
+            conn.Open();
+            // Kolla om filmen redan finns, uppdatera i så fall
+            //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
+            //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
+            // Om inte, lägg till filmen i databasen
+            // Lägg till skådespelarna i databasen
+            // Lägg till relationen mellan filmen och skådespelarna i databasen
+            var sql = "SELECT * FROM name WHERE Actor = @name"+"UPDATE * FROM name WHERE Actor = @name";
             cmd.Parameters.AddWithValue("@Actor", "@name");
+            cmd=new MySqlCommand(sql,conn);
+            cmd.ExecuteNonQuery();
             conn.Close();
+
+            
+           
         }
 
         public void AddActorToMovie(Actor actor, Movie movie)
