@@ -2,7 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
     using System.Linq;
+    using System.Reflection.Metadata.Ecma335;
     using System.Text;
     using System.Threading.Tasks;
     using MovieDatabase;
@@ -12,19 +15,14 @@
     public class MovieCrud
     {
         private string connString="";
-        private string conn="";
         
-
         public MovieCrud(string connString)   
         {
-            connString="";
-            conn =new MySqlConnection( connString);
+            connString="";           
         }
-        
         public void AddMovie(Movie movie)
 
         {
-
             // Kolla om filmen redan finns, uppdatera i så fall
             //var sql = "UPDATE Movies (Title, Year, LeadRole, Genre) " +
             //       "VALUES (@Title, @Year, @LeadRole, @Genre)";
@@ -39,15 +37,17 @@
 
         public void AddActor(Actor actor)
         {
-            
+
             // Kolla om skådespelaren finns i databasen
-           
+            var conn = new MySqlConnection(connString);
+            conn.Open();
             var sql = "SELECT * FROM name WHERE Actor = @name";
             var cmd = new MySqlCommand(sql, conn);
             // Uppdatera i så fall annars
             sql = "UPDATE * FROM name WHERE Actor = @name";
             // Lägg till skådespelaren i databasen
             cmd.Parameters.AddWithValue("@Actor", "@name");
+            conn.Close();
         }
 
         public void AddActorToMovie(Actor actor, Movie movie)
@@ -85,8 +85,9 @@
             
             DataTable dt = new DataTable();
 
-           
 
+            var conn = new MySqlConnection(connString);
+            conn.Open();
             // Hämta alla matchande filmer från databasen
             string sql = "SELECT year FROM movies WHERE year = @input";
             var cmd = new MySqlCommand(sql, conn);
@@ -100,6 +101,7 @@
             cmd.Parameters.AddWithValue("@s60127_Codemonkeys", "@input");
             var adt = new MySqlDataAdapter(cmd);
             adt.Fill(dt);
+            conn.Close();
 
             return dt;
 
@@ -109,8 +111,8 @@
             // Skapa en lista med filmer
             // Lägg till skådespelarna till filmerna
             // Returnera listan med filmer
-
         }
+        
 
         public List<Movie> GetMovie(int Id)
         {
@@ -199,30 +201,34 @@
         public void DeleteActor(int actorId)
         {
             
+            var conn = new MySqlConnection(connString);
+            conn.Open();
             string sql="Delete from Actor where ID=actorId";
             var cmd=new MySqlCommand(sql,conn);
             cmd.Parameters.AddWithValue("actorId","Actor");
             cmd.ExecuteNonQuery();
-            string sql="Delete from LeadActor where ID=actorId";
+            sql="Delete from LeadActor where ID=actorId";
             cmd.Parameters.AddWithValue("actorId","LeadActor");
-            var cmd=new MySqlCommand(sql,conn);
+            cmd=new MySqlCommand(sql,conn);
             cmd.ExecuteNonQuery();
-            conn.Cose();
+            conn.Close();
             // Ta bort skådespelaren från databasen
             // Ta bort alla relationer mellan skådespelaren och filmerna från databasen
         }
 
         public void DeleteMove(int moveId)
         {
-            
+            var conn = new MySqlConnection(connString);
+            conn.Open();
             string sql="Delete from Movies where ID=movieId";
             var cmd=new MySqlCommand(sql,conn);
             cmd.Parameters.AddWithValue("movieId","Movies");
             cmd.ExecuteNonQuery();
-            string sql="Delete from LeadActor where ID=movieId";
+            sql="Delete from LeadActor where ID=movieId";
             cmd.Parameters.AddWithValue("movieId","LeadActor");
-            var cmd=new MySqlCommand(sql,conn);
+            cmd=new MySqlCommand(sql,conn);
             cmd.ExecuteNonQuery();
+            conn.Close();
            
             // Ta bort filmen från databasen
             // Ta bort alla relationer mellan filmen och skådespelarna från databasen
